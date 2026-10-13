@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Pastas Infinitas</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="container main-layout">
+        
+        <aside class="sidebar">
+            <h2>Gerenciar</h2>
+            
+            <div class="card">
+                <h3>Nova Pasta</h3>
+                <form id="form-pasta">
+                    <select id="select-pasta-pai">
+                        <option value="">Raiz (Solta)</option>
+                    </select>
+                    <input type="text" id="input-pasta" placeholder="Nome da pasta" required>
+                    <button type="submit">Criar Pasta</button>
+                </form>
+            </div>
+
+            <div class="card destaque">
+                <h3>Nova Tarefa</h3>
+                <form id="form-tarefa">
+                    <input type="text" id="input-titulo" placeholder="O que precisa ser feito?" required>
+                    
+                    <div class="form-row">
+                        <label>Peso:</label>
+                        <input type="number" id="input-peso" value="1" min="1" required>
+                    </div>
+
+                    <select id="select-pasta-tarefa">
+                        <option value="">Raiz (Solta)</option>
+                    </select>
+
+                    <button type="submit">Adicionar Tarefa</button>
+                </form>
+            </div>
+
+            <!-- Adicionar na Sidebar -->
+            <div class="card destaque-lixeira">
+                <h3>🗑️ Lixeira</h3>
+                <div id="lixeira-dropzone">
+                    <p>Arraste uma pasta aqui para excluí-la</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="content">
+            <div class="header-tarefas">
+                <h1>Minhas Tarefas</h1>
+                <button id="btn-ordenar" class="btn-toggle" onclick="alternarOrdenacao()">
+                    🔄 Ordenar por Peso
+                </button>
+            </div>
+            
+            <!-- A raiz da nossa árvore recursiva -->
+            <div id="container-blocos" class="bloco-raiz"></div>
+        </main>
+    </div>
+
+    <!-- MODAL DE EDIÇÃO -->
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal()">&times;</span>
+            <h2>Editar Tarefa</h2>
+            <form id="form-editar">
+                <input type="hidden" id="edit-id">
+                <input type="text" id="edit-titulo" required>
+                
+                <div class="form-row" style="margin-top: 10px;">
+                    <label>Peso:</label>
+                    <input type="number" id="edit-peso" min="1" required>
+                </div>
+
+                <div style="margin-top: 10px; margin-bottom: 15px;">
+                    <select id="edit-pasta">
+                        <option value="">Raiz (Solta)</option>
+                    </select>
+                </div>
+
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE EXCLUSÃO DE PASTA -->
+    <div id="modal-excluir" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModalExcluir()">&times;</span>
+            <h2>Excluir Pasta</h2>
+            <p style="margin-bottom: 15px; color: #555;">O que deseja fazer com o conteúdo desta pasta?</p>
+            <form id="form-excluir">
+                <div style="margin-bottom: 10px;">
+                    <input type="radio" id="opt-excluir" name="acao-excluir" value="excluir_tudo" checked>
+                    <label for="opt-excluir"><strong>Excluir tudo</strong> (tarefas e subpastas apagadas)</label>
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <input type="radio" id="opt-mover" name="acao-excluir" value="mover">
+                    <label for="opt-mover"><strong>Extrair e mover</strong> conteúdo para:</label>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <select id="select-destino-excluir" disabled style="width: 100%; padding: 8px;">
+                        <option value="">Raiz (Solta)</option>
+                    </select>
+                </div>
+
+                <button type="submit" style="background-color: #e74c3c; width: 100%;">Confirmar Exclusão</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
